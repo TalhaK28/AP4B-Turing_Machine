@@ -26,10 +26,19 @@ public class Carte {
 			int[] proposition = {triangle, carree, rectangle};
 		
 		switch(this.conditionAction) {
-		case ">=1" : 
-			return proposition[this.conditionChamps[0]]>=1;
-			break;
-		case 
+		case "==4" : 
+			return proposition[this.conditionChamps[0]]<3;
+		case "1" :
+			return (proposition[0]==1 ^ proposition[2]==1 ^ proposition[2]==1 );
+		case "<" :	
+			return (proposition[this.conditionChamps[0]]<proposition[this.conditionChamps[1]]);
+		case "<<"  :
+			return (proposition[this.conditionChamps[0]]<proposition[this.conditionChamps[1]] && proposition[this.conditionChamps[0]]<proposition[this.conditionChamps[2]]);
+		case "}<6" :
+			return ((proposition[this.conditionChamps[0]] + proposition[this.conditionChamps[1]]) < 6);
+		case "->" :
+			return (proposition[this.conditionChamps[0]]<proposition[this.conditionChamps[1]] || proposition[this.conditionChamps[1]]<proposition[this.conditionChamps[2]]);
+		case "" :	
 		}
 		
 	}
