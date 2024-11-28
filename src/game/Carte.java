@@ -41,7 +41,7 @@ public class Carte {
 				return (rond<carree && rond<triangle);
 				
 			//19 : Triangle + Carré supérieure, égale ou inférieure à 6 | T+C < 6	
-			case "}<6" :
+			case "{T+C}<6" :
 				return ((triangle + carree) < 6);
 				
 			//24 : Le vérificateur vérifie s’il y a une séquence croissante consécutive ou NON |

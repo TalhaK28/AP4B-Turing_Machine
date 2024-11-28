@@ -1,5 +1,11 @@
-R%2
-Cette carte vérifie si la valeur de Rond est impaire
+>3
+la valeur de rond comparé à 3
+---
+rond < 3
+---
+rond = 3
+---
+rond > 3
 
 T<3
 Cette carte vérifie 
