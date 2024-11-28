@@ -55,11 +55,9 @@ public class Jeu {
 		
 	}
 	
-	public void setTestProp() {
-		this.testProp = true;
-	}
 	
 	public boolean testProp() {
+		this.testProp = true;
 		return this.proprositionFinal==this.listeRegle.getSolution();
 	}
 	
