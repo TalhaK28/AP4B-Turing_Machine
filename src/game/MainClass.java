@@ -1,14 +1,26 @@
 package game;
+//import javax.swing.*;
+//import java.awt.*;
 
+import java.awt.EventQueue;
 
 public class MainClass {
 
 	public static void main(String[] args) {
-	
-		Deck d = new Deck(1);
 		
-		d.displayDeck();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Menu frame = new Menu();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
 		
 	
 	}
+
 }
