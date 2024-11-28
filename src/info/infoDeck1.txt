@@ -1,0 +1,10 @@
+R%2
+Cette carte vérifie si la valeur de Rond est impaire
+
+T<3
+Cette carte vérifie 
+---
+si Triangle est 
+---
+inférieur à 3.
+	

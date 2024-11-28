@@ -5,53 +5,98 @@ import java.util.LinkedList;
 
 public class Deck {
 
+	int solution;
+	
 	LinkedList<Carte> Liste;
 	int longueur;
 	
 	
-	 // Constructeur qui prend en charge le fichier "nbDeck.txt"
+	 // Constructeur qui prend en charge le fichier "infoDeck.txt"
     Deck(int nbDeck) {
+    	
+    	switch(nbDeck) {
+    	case 1:
+    		this.solution = 241;
+    		break;
+    	case 2 : 
+    		this.solution = 224;
+    		break;
+    	case 3 : this.solution = 243;
+    		break;
+    	}
+    	
+    	
         this.Liste = new LinkedList<Carte>();
         chargerDeckDepuisFichier(nbDeck);
     }
 
-    // Méthode pour charger le deck depuis le fichier
     private void chargerDeckDepuisFichier(int nbDeck) {
-    	
-    	String fileName = "../infoDeck" + nbDeck + ".txt";
-    	
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-        	String line;
-            int idCarte = 1; // ID initial pour les cartes
+    	String fileName = "src/info/infoDeck" + nbDeck + ".txt";
+    
+    	try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+    		String line;
 
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue; // Ignorer les lignes vides
+    		while ((line = reader.readLine()) != null) {
+    			if (line.trim().isEmpty()) continue; // Ignorer les lignes vides
 
-                // Lecture de la conditionAction
-                String conditionAction = line.trim();
+    			// Lecture de la conditionAction
+    			String conditionAction = line.trim();
 
-                // Lecture de la description complète
-                StringBuilder descriptionBuilder = new StringBuilder();
-                while ((line = reader.readLine()) != null && !line.trim().isEmpty()) {
-                    if (line.trim().equals("---")) {
-                        descriptionBuilder.append("\n"); // Ajouter une nouvelle ligne pour les parties
-                    } else {
-                        descriptionBuilder.append(line.trim()).append(" ");
-                    }
-                }
+    			// Lecture de la description complète
+    			StringBuilder descriptionBuilder = new StringBuilder();
 
-                // Supprimer l'espace en trop à la fin
-                String description = descriptionBuilder.toString().trim();
+    			boolean firstPart = true; // Pour ne pas ajouter un saut de ligne au début de la description
 
-                // Créer une nouvelle carte et l'ajouter au deck
-                Carte carte = new Carte(description, idCarte, conditionAction);
-                Liste.add(carte);
-                idCarte++; // Incrémenter l'ID pour chaque carte
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    			while ((line = reader.readLine()) != null && !line.trim().isEmpty()) {
+    				line = line.trim(); // Enlever les espaces avant et après chaque ligne
+
+    				if (line.equals("---")) {
+    					// Ajouter un seul saut de ligne entre les sections, mais pas au début
+    					if (!firstPart) {
+    						descriptionBuilder.append("\n");
+    					}
+    				} else {
+    					// Si ce n'est pas un délimiteur, ajouter la ligne à la description
+    					descriptionBuilder.append(line).append(" "); // Ajouter la ligne avec un espace à la fin
+    					firstPart = false; // Après le premier ajout, autoriser l'ajout de sauts de ligne
+    				}
+    			}
+
+    			// Supprimer l'espace en trop à la fin (après la dernière ligne)
+    			String description = descriptionBuilder.toString().trim();
+
+    			// Créer une nouvelle carte et l'ajouter au deck
+    			Carte carte = new Carte(description, conditionAction);
+    			Liste.add(carte);
+    		}
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+
+ // Méthode pour afficher toutes les cartes du deck
+    public void displayDeck() {
+        if (Liste.isEmpty()) {
+            System.out.println("Le deck est vide !");
+            return;
+        }
+
+        System.out.println("=== Contenu du Deck ===");
+        for (Carte carte : Liste) {
+            System.out.println("Descriptif: " + carte.descriptif);
+            System.out.println("Condition Action: " + carte.condition);
+            System.out.println("--------------------------");
         }
     }
-	
-	
+
+    public boolean testCarte(int index, int triangle, int carree, int rond) {
+    	
+    	return this.Liste.get(index).verificateur(triangle, carree, rond);
+    	
+    }
+
+    public int getSolution() {
+    	return this.solution;
+    }
+    
 }

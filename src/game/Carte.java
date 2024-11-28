@@ -3,30 +3,27 @@ package game;
 public class Carte {
 	
 	String descriptif;
-	int id;
-	String conditionAction;
+	String condition;
 	
 	Carte(){
 		this.descriptif = "";
-		this.id = 0;
-		this.conditionAction = "";
+		this.condition = "";
 	}
 	
-	Carte(String d, int id, String conditionAction){
+	Carte(String d, String condition){
 		this.descriptif = d;
-		this.id = id;
-		this.conditionAction = conditionAction;
+		this.condition = condition;
 	}
 	
 		public boolean verificateur(int triangle, int carree, int rond) {
 		
 			
-			if (this.conditionAction == null) {
+			if (this.condition == null) {
 			    return false;
 			}
 	
 			
-		switch(this.conditionAction) {
+		switch(this.condition) {
 			//4 : Carré supérieure, égale ou inférieure à 3
 			case ">3" : 
 				return carree>3;
