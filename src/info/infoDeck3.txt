@@ -1,0 +1,49 @@
+T<3
+La valeur de triangle est comparée à 3.
+---
+triangle < 3
+---
+triangle = 3
+---
+triangle > 3
+
+R%2
+rond est vérifié pour être pair ou impair.
+---
+rond pair
+---
+rond impair
+
+R>T
+rond est comparé à triangle.
+---
+rond < triangle
+---
+rond = triangle
+---
+rond > triangle
+
+Pair>Impair
+Il y a plus de valeurs paires que de valeurs impaires dans la proposition.
+---
+pairs > impairs
+---
+pairs < impairs
+
+T+C=6
+La somme de triangle et carré est comparée à 6.
+---
+triangle + carree < 6
+---
+triangle + carree = 6
+---
+triangle + carree > 6
+
+OrdreC
+Les trois valeurs sont en ordre croissant, décroissant, ou aucun des deux.
+---
+ordre croissant : triangle < carree < rond
+---
+ordre décroissant : triangle > carree > rond
+---
+aucun ordre : triangle, carree, rond sans ordre particulier

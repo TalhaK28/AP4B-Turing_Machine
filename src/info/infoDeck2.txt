@@ -1,0 +1,42 @@
+{T+C}<6
+La somme de triangle et carré est comparée à 6.
+---
+triangle + carree < 6
+---
+triangle + carree = 6
+---
+triangle + carree > 6
+
+->
+La séquence des valeurs n’est pas strictement croissante.
+---
+rond = carree +  = triangle + 2
+---
+rond != carree + 1 != triangle + 2
+
+==4
+La valeur de rond est comparée à 4.
+---
+rond < 4
+---
+rond = 4
+---
+rond > 4
+
+>1
+carree est comparé à 1.
+---
+carree < 1
+---
+carree = 1
+---
+carree > 1
+
+{T+R}=6
+La somme de triangle et rond est comparée à 6.
+---
+triangle + rond < 6
+---
+triangle + rond = 6
+---
+triangle + rond > 6

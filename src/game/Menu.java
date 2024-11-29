@@ -129,11 +129,38 @@ public class Menu extends JFrame {
 
                 // Ajoutez un écouteur pour mettre à jour les champs en fonction du nombre de joueurs
                 playerCountSpinner.addChangeListener(e1 -> {
-                    int playerCount = (int) playerCountSpinner.getValue();
-                    playerNamesPanel.removeAll();
-                    for (int i = 1; i <= playerCount; i++) {
-                        playerNamesPanel.add(new JLabel("Joueur " + i + " :"));
-                        playerNamesPanel.add(new JTextField(15));
+                	 int playerCount = (int) playerCountSpinner.getValue();
+                     playerNamesPanel.removeAll();
+                     for (int i = 1; i <= playerCount; i++) {
+                         JLabel playerLabel = new JLabel("Joueur " + i + " :");
+                         try {
+                             // Charge la police depuis le dossier "src/font"
+                             InputStream is = Menu.class.getResourceAsStream("/font/Hexaplex.otf");
+                             if (is != null) {
+                                 Font customFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(15f); // Taille 15
+                                 playerLabel.setFont(customFont);
+                             } else {
+                                 System.out.println("La ressource de la police n'a pas été trouvée !");
+                             }
+                         } catch (Exception s) {
+                             s.printStackTrace();
+                         }
+                         playerNamesPanel.add(playerLabel);
+                         
+                         JTextField playerTextField = new JTextField(15);
+                         try {
+                             // Charge la police depuis le dossier "src/font"
+                             InputStream is = Menu.class.getResourceAsStream("/font/Hexaplex.otf");
+                             if (is != null) {
+                                 Font customFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(15f); // Taille 15
+                                 playerTextField.setFont(customFont);
+                             } else {
+                                 System.out.println("La ressource de la police n'a pas été trouvée !");
+                             }
+                         } catch (Exception s) {
+                             s.printStackTrace();
+                         }
+                         playerNamesPanel.add(playerTextField);
                     }
                     playerNamesPanel.revalidate();
                     playerNamesPanel.repaint();
@@ -183,6 +210,9 @@ public class Menu extends JFrame {
                         okButton.setFont(customFont);
                         cancelButton.setFont(customFont);
                         playerCountLabel.setFont(customFont);
+                        difficultyLabel.setFont(customFont);
+                        playerCountSpinner.setFont(customFont);
+                        difficultyComboBox.setFont(customFont);
                     } else {
                         System.out.println("La ressource de la police n'a pas été trouvée !");
                     }

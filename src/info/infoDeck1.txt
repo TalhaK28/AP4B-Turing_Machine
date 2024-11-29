@@ -1,16 +1,34 @@
 >3
-la valeur de rond comparé à 3
+La valeur de carré est comparée à 3.
 ---
-rond < 3
+carree < 3
 ---
-rond = 3
+carree = 3
 ---
-rond > 3
+carree > 3
 
-T<3
-Cette carte vérifie 
+1
+Une des valeurs est égale à 1.
 ---
-si Triangle est 
+triangle = 1
 ---
-inférieur à 3.
-	
+carree = 1
+---
+rond = 1
+
+<
+triangle est comparé à carree.
+---
+triangle < carree
+---
+triangle = carree
+---
+triangle > carree
+
+<<
+rond est comparé à carré et triangle.
+---
+rond > carree et triangle
+---
+rond < carree et triangle
+
