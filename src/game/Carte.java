@@ -13,7 +13,7 @@ public class Carte {
     public Carte(String description, String condition) {
     	this.descriptif = description;
         this.condition = condition;      
-        loadConditions("src/info/conditions.txt");
+        loadConditions("src/info/conditions");
     }
 
     private void loadConditions(String fileName) {

@@ -23,11 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import java.awt.Dimension;
 
-import javax.swing.border.EmptyBorder;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.InputStream;
 import javax.swing.GroupLayout.Alignment;
+
+import java.util.LinkedList;
 
 public class Menu extends JFrame {
 
@@ -126,6 +128,21 @@ public class Menu extends JFrame {
                 gbc.gridy = 2;
                 gbc.gridwidth = 2;
                 dialog.add(playerNamesPanel, gbc);
+                
+                JTextField playerTextField1 = new JTextField(15);
+                try {
+                    // Charger la police pour le champ de texte
+                    InputStream is = Menu.class.getResourceAsStream("/font/Hexaplex.otf");
+                    if (is != null) {
+                        Font customFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(15f); // Taille 15
+                        playerTextField1.setFont(customFont);
+                    } else {
+                        System.out.println("La ressource de la police n'a pas été trouvée !");
+                    }
+                } catch (Exception s) {
+                    s.printStackTrace();
+                }
+                playerNamesPanel.add(playerTextField1);
 
                 // Ajoutez un écouteur pour mettre à jour les champs en fonction du nombre de joueurs
                 playerCountSpinner.addChangeListener(e1 -> {
@@ -268,6 +285,20 @@ public class Menu extends JFrame {
                 // Action pour le bouton OK
                 okButton.addActionListener(e1 -> {
                     String selectedDifficulty = (String) difficultyComboBox.getSelectedItem();
+                    int sDifficulty = 0;
+                    
+                    switch(selectedDifficulty) {
+                    case "Facile" :
+                    	sDifficulty = 1;
+                    	break;
+                    case "Normal" :
+                    	sDifficulty = 2;
+                    	break;
+                    case "Difficile" :
+                    	sDifficulty = 3;
+                    	break;
+                    }
+                    
                     int playerCount = (int) playerCountSpinner.getValue();
 
                     // Récupérez les noms des joueurs
@@ -278,13 +309,29 @@ public class Menu extends JFrame {
                             playerNames.add(((JTextField) comp).getText());
                         }
                     }
+                    
+                    LinkedList<Joueur> Jliste = new LinkedList<>();
+                    
+                    for(int i=0; i<playerCount;i++) {
+                    	Joueur player = new Joueur(playerNames.get(i));
+                    	Jliste.add(player);
+                    }
+                    
+                    
+                    dialog.dispose();
+                    dispose();
+                    
+                    
+                    
+                    JeuInterface frame = new JeuInterface(Jliste, sDifficulty);
+					frame.setVisible(true);
 
                     // Affichez les valeurs (ou utilisez-les pour démarrer le jeu)
                     System.out.println("Difficulté sélectionnée : " + selectedDifficulty);
                     System.out.println("Nombre de joueurs : " + playerCount);
                     System.out.println("Noms des joueurs : " + playerNames);
 
-                    dialog.dispose();
+                    
                 });
 
                 // Action pour le bouton Annuler
@@ -337,7 +384,7 @@ public class Menu extends JFrame {
         producedByLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         /// Exit button
-        JButton exitButton = new JButton("Exit") {
+        JButton exitButton = new JButton("Quitter") {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
