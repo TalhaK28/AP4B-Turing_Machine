@@ -1,7 +1,7 @@
-{T+C}<6
+{T+C}&lt;6
 La somme de triangle et carré est comparée à 6.
 ---
-triangle + carree < 6
+triangle + carree &lt; 6
 ---
 triangle + carree = 6
 ---
@@ -17,7 +17,7 @@ rond != carree + 1 != triangle + 2
 ==4
 La valeur de rond est comparée à 4.
 ---
-rond < 4
+rond &lt; 4
 ---
 rond = 4
 ---
@@ -26,7 +26,7 @@ rond > 4
 >1
 carree est comparé à 1.
 ---
-carree < 1
+carree &lt; 1
 ---
 carree = 1
 ---
@@ -35,7 +35,7 @@ carree > 1
 {T+R}=6
 La somme de triangle et rond est comparée à 6.
 ---
-triangle + rond < 6
+triangle + rond &lt; 6
 ---
 triangle + rond = 6
 ---

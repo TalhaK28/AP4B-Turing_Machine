@@ -8,7 +8,7 @@ public class Deck {
 	int solution;
 	
 	LinkedList<Carte> Liste;
-	int longueur;
+	
 	
 	
 	 // Constructeur qui prend en charge le fichier "infoDeck.txt"
@@ -74,29 +74,19 @@ public class Deck {
     	}
     }
 
- // Méthode pour afficher toutes les cartes du deck
-    public void displayDeck() {
-        if (Liste.isEmpty()) {
-            System.out.println("Le deck est vide !");
-            return;
-        }
 
-        System.out.println("=== Contenu du Deck ===");
-        for (Carte carte : Liste) {
-            System.out.println("Descriptif: " + carte.descriptif);
-            System.out.println("Condition Action: " + carte.condition);
-            System.out.println("--------------------------");
-        }
-    }
-
-    public boolean testCarte(int index, int triangle, int carree, int rond) {
-    	
-    	return this.Liste.get(index).verificateur(triangle, carree, rond);
-    	
-    }
 
     public int getSolution() {
     	return this.solution;
     }
+    
+    public int getSize() {
+    	return Liste.size();
+    }
+    
+    public boolean testCarte(int index, int triangle, int carree, int rond) {
+    	return Liste.get(index).verificateur(triangle, carree, rond);
+    }
+    
     
 }

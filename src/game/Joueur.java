@@ -9,7 +9,7 @@ public class Joueur {
 	int rond;//troisième valeur entrée par le joueur
 	int nbQuestion;
 	String note; //les notes (informations) gagnés aux cours des manches précédentes
-	
+	int proposition;
 	
 	
 	
@@ -88,5 +88,8 @@ public class Joueur {
         this.note = note;
     }
 	
+    public void setProposition(int p) {
+    	this.proposition=p;
+    }
 	
 }

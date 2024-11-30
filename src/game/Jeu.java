@@ -44,7 +44,7 @@ public class Jeu {
 		this.listeDefJoueur=Liste;
 		
 		this.testProp = false;
-		this.proprositionFinal = 0;
+		this.propositionFinal = 0;
 		
 	}
 	
@@ -58,7 +58,7 @@ public class Jeu {
 	
 	public boolean testProp() {
 		this.testProp = true;
-		return this.proprositionFinal==this.listeRegle.getSolution();
+		return this.propositionFinal==this.listeRegle.getSolution();
 	}
 	
 	// Getters and Setters
@@ -91,14 +91,8 @@ public class Jeu {
         return rond;
     }
 
-    /**
-     * Setter unique pour les trois variables triangle, carree, et rond.
-     * 
-     * @param triangle valeur pour triangle
-     * @param carree   valeur pour carree
-     * @param rond     valeur pour rond
-     */
-    public void setFigures(int triangle, int carree, int rond) {
+
+    public void setVal(int triangle, int carree, int rond) {
         this.triangle = triangle;
         this.carree = carree;
         this.rond = rond;
@@ -134,6 +128,10 @@ public class Jeu {
 
     public void setTour(int tour) {
         this.tour = tour;
+    }
+    
+    public void enleverJoueur(int index) {
+    	listeActJoueur.remove(index);
     }
 	
 	

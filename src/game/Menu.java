@@ -321,15 +321,8 @@ public class Menu extends JFrame {
                     dialog.dispose();
                     dispose();
                     
-                    
-                    
                     JeuInterface frame = new JeuInterface(Jliste, sDifficulty);
 					frame.setVisible(true);
-
-                    // Affichez les valeurs (ou utilisez-les pour démarrer le jeu)
-                    System.out.println("Difficulté sélectionnée : " + selectedDifficulty);
-                    System.out.println("Nombre de joueurs : " + playerCount);
-                    System.out.println("Noms des joueurs : " + playerNames);
 
                     
                 });

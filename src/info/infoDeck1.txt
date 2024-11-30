@@ -1,7 +1,7 @@
 >3
 La valeur de carré est comparée à 3.
 ---
-carree < 3
+carree &lt; 3
 ---
 carree = 3
 ---
@@ -16,19 +16,19 @@ carree = 1
 ---
 rond = 1
 
-<
+&lt;
 triangle est comparé à carree.
 ---
-triangle < carree
+triangle &lt; carree
 ---
 triangle = carree
 ---
 triangle > carree
 
-<<
+&lt;&lt;
 rond est comparé à carré et triangle.
 ---
 rond > carree et triangle
 ---
-rond < carree et triangle
+rond &lt; carree et triangle
 
