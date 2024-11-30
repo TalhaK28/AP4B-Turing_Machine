@@ -18,7 +18,7 @@ public class Jeu {
 	boolean testProp;
 	
 	//contient l'essaie du joueur
-	int proprositionFinal;
+	int propositionFinal;
 	
 	
 	LinkedList<Joueur> listeDefJoueur; //liste non modifié du début à la fin
