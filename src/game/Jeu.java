@@ -56,8 +56,7 @@ public class Jeu {
 	}
 	
 	
-	public boolean testProp() {
-		this.testProp = true;
+	public boolean testProp(){
 		return this.propositionFinal==this.listeRegle.getSolution();
 	}
 	
@@ -77,6 +76,10 @@ public class Jeu {
 
     public void setListeActJoueur(LinkedList<Joueur> listeActJoueur) {
         this.listeActJoueur = listeActJoueur;
+    }
+    
+    public void removeListeActJoueurIndex(int index) {
+    	this.listeActJoueur.remove(index);
     }
 
     public int getTriangle() {

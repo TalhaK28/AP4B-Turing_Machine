@@ -33,15 +33,15 @@ public class Carte {
 				return (triangle==1 ^ carree==1 ^ rond==1 );
 				
 			//11 : Triangle supérieure, égale ou inférieure à Carré. | C > T	
-			case "<" :	
+			case "&lt;" :	
 				return (triangle<carree);
 				
 			//14 : Le vérificateur vérifie si Rond est strictement plus petit que Carré et Triangle	
-			case "<<"  :
+			case "&lt;&lt;"  :
 				return (rond<carree && rond<triangle);
 				
 			//19 : Triangle + Carré supérieure, égale ou inférieure à 6 | T+C < 6	
-			case "{T+C}<6" :
+			case "{T+C}&lt;6" :
 				return ((triangle + carree) < 6);
 				
 			//24 : Le vérificateur vérifie s’il y a une séquence croissante consécutive ou NON |
@@ -62,7 +62,7 @@ public class Carte {
 				return ((triangle + rond) == 6);
 				
 			//2 : Triangle supérieure, égale ou inférieure à 3. | T < 3 
-			case "T<3" :
+			case "T&lt;3" :
 				return triangle<3;
 				
 			//7 : Le vérificateur vérifie si Rond est impaire (1,3,5). | R %2 == 1
@@ -94,5 +94,13 @@ public class Carte {
 				return false;
 		}
 	}
+		
+		public String getCondition() {
+			return this.condition;
+		}
+		
+		public String getDescriptif() {
+			return this.descriptif;
+		}
 	
 }

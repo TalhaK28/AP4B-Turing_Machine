@@ -1,5 +1,5 @@
 {T+C}&lt;6
-La somme de triangle et carré est comparée à 6.
+La somme de triangle et carree est comparée à 6.
 ---
 triangle + carree &lt; 6
 ---
@@ -8,9 +8,9 @@ triangle + carree = 6
 triangle + carree > 6
 
 ->
-La séquence des valeurs n’est pas strictement croissante.
+La séquence des valeurs est elle strictement croissante.
 ---
-rond = carree +  = triangle + 2
+rond = carree + 1 = triangle + 2
 ---
 rond != carree + 1 != triangle + 2
 

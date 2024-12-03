@@ -31,7 +31,7 @@ pairs > impairs
 pairs &lt; impairs
 
 T+C=6
-La somme de triangle et carré est comparée à 6.
+La somme de triangle et carree est comparée à 6.
 ---
 triangle + carree &lt; 6
 ---
@@ -40,10 +40,12 @@ triangle + carree = 6
 triangle + carree > 6
 
 OrdreC
-Les trois valeurs sont en ordre croissant, décroissant, ou aucun des deux.
+Ordre croissant, décroissant, ou aucun des deux.
 ---
-ordre croissant : triangle &lt; carree &lt; rond
+triangle &lt; carree &lt; rond
 ---
-ordre décroissant : triangle > carree > rond
+triangle > carree > rond
 ---
-aucun ordre : triangle, carree, rond sans ordre particulier
+triangle, carree, rond 
+---
+sans ordre particulier
