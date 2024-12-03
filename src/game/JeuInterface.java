@@ -40,6 +40,9 @@ import java.io.InputStream;
      // Créer une HashMap pour stocker les descriptifs HTML initiaux
         private Map<JLabel, String> initialHtmlMap = new HashMap<>();
         
+        private JLabel[] lifeLabels;
+        private String[] lifeStates = new String[3]; // "dispo" ou "utilise"
+
 
         public JeuInterface(LinkedList<Joueur> Liste, int diff) {
         
@@ -101,22 +104,58 @@ import java.io.InputStream;
             // Redessiner tous les composants existants pour appliquer la nouvelle police
             SwingUtilities.updateComponentTreeUI(contentPane);
 
-            // ** Panneau supérieur : Manche et joueur actif **
+         // ** Panneau supérieur : Manche, joueur actif, et vies **
             JPanel topPanel = new JPanel();
-            topPanel.setLayout(new GridLayout(2, 1));
+            topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS)); // Organisation verticale
             topPanel.setOpaque(false);
 
+            // Panneau pour les labels (Manche et Joueur actif)
+            JPanel labelsPanel = new JPanel(new GridLayout(2, 1)); // 2 lignes, 1 colonne
+            labelsPanel.setOpaque(false);
+
+            // Manche
             mancheLabel = new JLabel("Manche : " + manche, SwingConstants.CENTER);
-            mancheLabel.setFont(new Font("Hexaplex", Font.BOLD, 32)); // Utilisation de la police Hexaplex;
-            topPanel.add(mancheLabel);
-            
-            int indexPlayer = currentPlayerIndex+ 1;
+            mancheLabel.setFont(new Font("Hexaplex", Font.BOLD, 32));
+            labelsPanel.add(mancheLabel);
 
+            // Tour du joueur
+            int indexPlayer = currentPlayerIndex + 1;
             playerTurnLabel = new JLabel("Tour du joueur " + indexPlayer + " : " + controller.getListeActJoueur().get(currentPlayerIndex).getPseudo(), SwingConstants.CENTER);
-            playerTurnLabel.setFont(new Font("Hexaplex", Font.BOLD, 24)); // Utilisation de la police Hexaplex;
-            topPanel.add(playerTurnLabel);
+            playerTurnLabel.setFont(new Font("Hexaplex", Font.BOLD, 24));
+            labelsPanel.add(playerTurnLabel);
 
+            // Ajouter les labels au panneau supérieur
+            topPanel.add(labelsPanel);
+
+         // Panneau des vies
+            JPanel livesPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+            livesPanel.setOpaque(false);
+
+            // Ajouter 3 JLabels pour les vies avec redimensionnement
+            lifeLabels = new JLabel[3];
+            lifeStates = new String[3];  // Initialisation des états des vies
+            int iconWidth = 30; // Largeur de l'icône
+            int iconHeight = 30; // Hauteur de l'icône
+
+            for (int i = 0; i < 3; i++) {
+                // Initialiser l'état de chaque vie
+                lifeStates[i] = "dispo";  // "dispo" signifie que la vie est disponible
+                
+                ImageIcon originalIcon = new ImageIcon("src/image/testDispo.png");
+                originalIcon.setDescription("testDispo");  // Ajout de la description
+                Image resizedImage = originalIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+                lifeLabels[i] = new JLabel(new ImageIcon(resizedImage));
+                
+                livesPanel.add(lifeLabels[i]);
+            
+            }
+
+            // Ajouter le panneau des vies au panneau supérieur
+            topPanel.add(livesPanel, BorderLayout.EAST);
+
+            // Ajouter le panneau supérieur au contentPane
             contentPane.add(topPanel, BorderLayout.NORTH);
+
 
          // ** Panneau central : Cartes avec boutons "Tester" **
             JPanel cardsPanel = new JPanel();
@@ -127,9 +166,9 @@ import java.io.InputStream;
                 Carte carte = controller.listeRegle.Liste.get(i);
 
                 String descriptifHtml = carte.descriptif
-                        .replace("triangle", "<img src='file:src/image/triangle.png' width='40' height='40'>") // Images plus grandes
-                        .replace("carree", "<img src='file:src/image/carree.png' width='40' height='40'>")
-                        .replace("rond", "<img src='file:src/image/rond.png' width='40' height='40'>")
+                        .replace("triangle", "<img src='file:src/image/triangle.png' width='25' height='25'>") // Images plus grandes
+                        .replace("carree", "<img src='file:src/image/carree.png' width='25' height='25'>")
+                        .replace("rond", "<img src='file:src/image/rond.png' width='25' height='25'>")
                         .replace("\n", "<br>");
                 
                 
@@ -318,6 +357,7 @@ import java.io.InputStream;
     private void validateTurn() {
         try {
         	
+        	resetLives();
         	resetAllCards();
         	resetTextFields();
             
@@ -430,14 +470,17 @@ import java.io.InputStream;
         JLabel cardLabel = (JLabel) cardPanel.getComponent(0); // Supposant que le JLabel descriptif est le premier composant du panneau
 
         String iconHtml = result
-                ? "<div style='text-align: center;'><img src='file:src/image/valid.png' width='100' height='100'></div>"
-                : "<div style='text-align: center;'><img src='file:src/image/invalid.png' width='100' height='100'></div>";
+                ? "<div style='text-align: center;'><img src='file:src/image/valid.png' width='60' height='60'></div>"
+                : "<div style='text-align: center;'><img src='file:src/image/invalid.png' width='60' height='60'></div>";
 
         String currentHtml = cardLabel.getText();
         currentHtml = currentHtml.replace("</html>", "<br>" + iconHtml + "</html>");
 
         cardLabel.setText(currentHtml);
 
+        //utiliser une vie
+        utiliseTest();
+        
         // Bloquer les champs texte
         disableTextFields();
         cardPanel.revalidate();
@@ -545,8 +588,34 @@ private void resetTextFields() {
     }
 }
 
+//Utiliser une vie
+private void utiliseTest() {
+ for (int i = 0; i < lifeLabels.length; i++) {
+     if ("dispo".equals(lifeStates[i])) {  // Vérifie si la vie est disponible
+         lifeStates[i] = "utilise";  // Modifie l'état de la vie à "utilise"
+         
+         // Met à jour l'icône de la vie
+         ImageIcon newIcon = new ImageIcon("src/image/testUtilise.png");
+         newIcon.setDescription("testUtilise");
+         Image resizedImage = newIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+         lifeLabels[i].setIcon(new ImageIcon(resizedImage));
+         break;  // On ne modifie qu'une vie à la fois
+     }
+ }
+}
 
-
+//Réinitialiser les vies
+private void resetLives() {
+ for (int i = 0; i < lifeLabels.length; i++) {
+     lifeStates[i] = "dispo";  // Remet l'état à "dispo"
+     
+     // Remet l'icône de la vie à son état initial
+     ImageIcon newIcon = new ImageIcon("src/image/testDispo.png");
+     newIcon.setDescription("testDispo");
+     Image resizedImage = newIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+     lifeLabels[i].setIcon(new ImageIcon(resizedImage));
+ }
+}
 
     }
 
