@@ -4,29 +4,29 @@ import java.util.LinkedList;
 
 public class Jeu {
 	
-	Deck listeRegle;
+	private Deck listeRegle;
 
 	//fields pour stocker temporairement la proposition du joueur
-	int triangle;
-	int carree;
-	int rond;
+	private int triangle;
+	private int carree;
+	private int rond;
 	
 	//nb de vérificateur vérifié durant une manche 
-	int nbDemande;
+	private int nbDemande;
 	
 	//montre si au moins un joueur veut tester sa proposition
-	boolean testProp;
+	private boolean testProp;
 	
 	//contient l'essaie du joueur
-	int propositionFinal;
+	private int propositionFinal;
 	
 	
-	LinkedList<Joueur> listeDefJoueur; //liste non modifié du début à la fin
-	LinkedList<Joueur> listeActJoueur; //les joueurs ayant tenté leur chance sont enlevé de cette liste
+	private LinkedList<Joueur> listeDefJoueur; //liste non modifié du début à la fin
+	private LinkedList<Joueur> listeActJoueur; //les joueurs ayant tenté leur chance sont enlevé de cette liste
 	
 	//int diffulte;
 	
-	int tour;
+	private int tour;
 	
 	//int modeJeu;
 	
@@ -100,6 +100,11 @@ public class Jeu {
         this.carree = carree;
         this.rond = rond;
     }
+    
+    public int getVal() {
+        String concatenated = String.valueOf(triangle) + String.valueOf(carree) + String.valueOf(rond);
+        return Integer.parseInt(concatenated);
+    }
 
     public int getNbDemande() {
         return nbDemande;
@@ -137,7 +142,14 @@ public class Jeu {
     	listeActJoueur.remove(index);
     }
 	
-	
+    public Deck getListeRegle() {
+    	return listeRegle;
+    }
+
+	public int getNombreDeCartes() {
+		
+		return listeRegle.getSize();
+	}
 	
 	
 }

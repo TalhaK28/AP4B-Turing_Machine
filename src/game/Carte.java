@@ -2,8 +2,8 @@ package game;
 
 public class Carte {
 	
-	String descriptif;
-	String condition;
+	private String descriptif;
+	private String condition;
 	
 	Carte(){
 		this.descriptif = "";

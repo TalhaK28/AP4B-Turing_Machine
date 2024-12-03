@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -39,6 +41,7 @@ import java.io.InputStream;
         
      // Créer une HashMap pour stocker les descriptifs HTML initiaux
         private Map<JLabel, String> initialHtmlMap = new HashMap<>();
+        private char[] testResults;
         
         private JLabel[] lifeLabels;
         private String[] lifeStates = new String[3]; // "dispo" ou "utilise"
@@ -48,7 +51,7 @@ import java.io.InputStream;
         
 
             // Configurer l'icône de la fenêtre
-            setIconImage(Toolkit.getDefaultToolkit().getImage(Menu.class.getResource("/image/Turing-logo.PNG")));
+            setIconImage(Toolkit.getDefaultToolkit().getImage(JeuInterface.class.getResource("/image/Turing-logo.PNG")));
 
             // Définir la taille de la fenêtre en plein écran
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -66,6 +69,11 @@ import java.io.InputStream;
         	this.triangle = false;
         	this.carree = false;
         	this.rond = false;
+        	
+        	this.testResults = new char[controller.getNombreDeCartes()];
+        	for(int i=0;i<diff; i++) {
+        		testResults[i]='2';
+        	}
 
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -159,13 +167,13 @@ import java.io.InputStream;
 
          // ** Panneau central : Cartes avec boutons "Tester" **
             JPanel cardsPanel = new JPanel();
-            cardsPanel.setLayout(new GridLayout(0, controller.listeRegle.getSize(), 20, 20)); // Espacement plus large entre les cartes
+            cardsPanel.setLayout(new GridLayout(0, controller.getListeRegle().getSize(), 20, 20)); // Espacement plus large entre les cartes
             cardsPanel.setOpaque(false);
 
-            for (int i = 0; i < controller.listeRegle.getSize(); i++) {
-                Carte carte = controller.listeRegle.Liste.get(i);
+            for (int i = 0; i < controller.getListeRegle().getSize(); i++) {
+                Carte carte = controller.getListeRegle().getCarteIndex(i);
 
-                String descriptifHtml = carte.descriptif
+                String descriptifHtml = carte.getDescriptif()
                         .replace("triangle", "<img src='file:src/image/triangle.png' width='25' height='25'>") // Images plus grandes
                         .replace("carree", "<img src='file:src/image/carree.png' width='25' height='25'>")
                         .replace("rond", "<img src='file:src/image/rond.png' width='25' height='25'>")
@@ -256,12 +264,46 @@ import java.io.InputStream;
             // Ajout des formes au bas du panneau
             bottomPanel.add(figuresPanel, BorderLayout.CENTER);
 
-            // ** Bouton Valider **
-            JButton validateButton = new JButton("Valider");
-            validateButton.setPreferredSize(new Dimension(150, 50)); // Bouton plus grand
+            // ** Panneau des boutons : Show Menu et Valider Mon Tour **
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setOpaque(false);
+            buttonPanel.setLayout(new GridBagLayout()); // Utilisation de GridBagLayout pour un agencement plus flexible
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.insets = new Insets(0, 20, 0, 20); // Espacement horizontal pour les boutons
+
+            // ** Bouton "Show Menu" **
+            JButton showMenuButton = new JButton("Afficher le Menu");
+            showMenuButton.setPreferredSize(new Dimension(150, 50));
+            showMenuButton.setBackground(new Color(255, 99, 71)); // Couleur pour attirer l'attention
+            showMenuButton.setForeground(Color.WHITE);
+            showMenuButton.setFont(new Font("Hexaplex", Font.BOLD, 18));
+            showMenuButton.setBorder(BorderFactory.createLineBorder(new Color(255, 99, 71), 2));
+            showMenuButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Curseur main au survol
+
+            // Effet de survol pour le bouton "Show Menu"
+            showMenuButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    showMenuButton.setBackground(new Color(255, 69, 0)); // Couleur au survol
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    showMenuButton.setBackground(new Color(255, 99, 71)); // Retour à la couleur initiale
+                }
+            });
+
+            showMenuButton.addActionListener(e -> showMenu()); // Implémentez showMenu()
+
+            // Ajouter le bouton "Show Menu" à la grille
+            gbc.gridx = 0; // Positionnement à gauche
+            buttonPanel.add(showMenuButton, gbc);
+
+            // ** Bouton "Valider Mon Tour" **
+            JButton validateButton = new JButton("Valider Mon Tour");
+            validateButton.setPreferredSize(new Dimension(250, 50)); // Bouton plus grand
             validateButton.setBackground(new Color(0, 102, 204)); // Bleu foncé pour attirer l'attention
-            validateButton.setForeground(Color.WHITE); // Texte blanc
-            validateButton.setFont(new Font("Hexaplex", Font.BOLD, 24)); // Utilisation de la police Hexaplex;
+            validateButton.setForeground(Color.WHITE);
+            validateButton.setFont(new Font("Hexaplex", Font.BOLD, 24)); // Utilisation de la police Hexaplex
             validateButton.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 2)); // Bordure arrondie
             validateButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Curseur main au survol
 
@@ -274,16 +316,20 @@ import java.io.InputStream;
                     validateButton.setBackground(new Color(0, 102, 204)); // Retour à la couleur initiale
                 }
             });
-            
+
             validateButton.addActionListener(e -> validateTurn());
-            
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.setOpaque(false);
-            buttonPanel.add(validateButton);
-            
-            
+
+            // Ajouter le bouton "Valider Mon Tour" à la grille, centré
+            gbc.gridx = 1; // Positionnement au centre
+            gbc.gridwidth = 2; // Le bouton prendra 2 colonnes pour être centré
+            buttonPanel.add(validateButton, gbc);
+
+            // Ajouter le panneau des boutons au panneau inférieur
             bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+            // Ajouter le panneau inférieur au contentPane
             contentPane.add(bottomPanel, BorderLayout.SOUTH);
+
         }
 
 
@@ -313,6 +359,8 @@ import java.io.InputStream;
             
             return panel;
         }
+        
+        
 
         private void updateDigitStatus(JTextField textField, boolean isInserted) {
     switch (textField.getName()) {
@@ -328,6 +376,7 @@ import java.io.InputStream;
     }
 }
 
+        
         
         private void addTextFieldListener(JTextField textField) {
             DocumentListener listener = new DocumentListener() {
@@ -352,6 +401,7 @@ import java.io.InputStream;
         }
 
     
+        
 
 
     private void validateTurn() {
@@ -360,7 +410,21 @@ import java.io.InputStream;
         	resetLives();
         	resetAllCards();
         	resetTextFields();
-            
+        	cartesTestees.clear();
+        	
+
+        	// Convertir le tableau char[] en String lisible
+        	String readableResults = String.valueOf(this.testResults);
+
+        	
+        	
+        	controller.getListeActJoueur().get(currentPlayerIndex).addNote(controller.getVal(),readableResults);
+        	
+        	// 	Réinitialiser le suivi des résultats des tests
+        	for(int i=0;i<this.testResults.length; i++) {
+        		testResults[i]='2';
+        	}
+        	
 
             if (++currentPlayerIndex >= controller.getListeActJoueur().size()) {
                 currentPlayerIndex = 0;
@@ -373,10 +437,15 @@ import java.io.InputStream;
             JOptionPane.showMessageDialog(this, "Veuillez entrer des nombres valides.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    
+    
+    
 
     private void finDeManche() {
         int i = 0;
         LinkedList<Joueur> joueursAyantPropose = new LinkedList<>();
+        LinkedList<String> pseudoPropositionRatee = new LinkedList<>();
         Iterator<Joueur> iterator = controller.getListeActJoueur().iterator();
         
         while (iterator.hasNext()) {
@@ -394,6 +463,7 @@ import java.io.InputStream;
                     joueursAyantPropose.add(joueur);
                     i++;
                 } else {
+                	pseudoPropositionRatee.add(joueur.getPseudo());
                     iterator.remove();  // Supprime l'élément de la liste pendant l'itération
                     i--;
                 	
@@ -404,6 +474,12 @@ import java.io.InputStream;
     
 
         if (joueursAyantPropose.isEmpty()) {
+        	
+        	if(!pseudoPropositionRatee.isEmpty()) {
+        		for(int i1=0; i1<pseudoPropositionRatee.size(); i1++) {
+        		JOptionPane.showMessageDialog(JeuInterface.this, "Le joueur " + pseudoPropositionRatee.get(i1)+ " s'est trompé" , "Erreur", JOptionPane.ERROR_MESSAGE);
+        		}
+        	}
             manche++;
             essaisParJoueur = new int[controller.getListeActJoueur().size()];
             cartesTestees.clear();
@@ -462,9 +538,10 @@ import java.io.InputStream;
 
         // Tester la carte et obtenir le résultat
         boolean result = controller.testCarte(index);
-        String message = result ? "Test réussi !" : "Test échoué.";
-        JOptionPane.showMessageDialog(JeuInterface.this, message, "Résultat", JOptionPane.INFORMATION_MESSAGE);
+        
 
+        updateTestResults(index,result);
+        
         // Mettre à jour le descriptif HTML de la carte avec l'icône correspondante
         JPanel cardPanel = (JPanel) ((JButton) e.getSource()).getParent();
         JLabel cardLabel = (JLabel) cardPanel.getComponent(0); // Supposant que le JLabel descriptif est le premier composant du panneau
@@ -498,7 +575,14 @@ import java.io.InputStream;
 
 }
 
-
+   private void updateTestResults(int index, boolean valid) {
+	   
+	   if(valid) {
+       	this.testResults[index] = '1';
+       }else {
+       	this.testResults[index] = '0';
+       }
+   }
 
    
    
@@ -616,6 +700,179 @@ private void resetLives() {
      lifeLabels[i].setIcon(new ImageIcon(resizedImage));
  }
 }
+
+
+private void showMenu() {
+	// Création du panneau de menu
+	JPanel menuPanel = new JPanel();
+	menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
+
+	// Ajouter un texte HTML dans le menu
+	String htmlText = this.controller.getListeActJoueur().get(currentPlayerIndex).generateHtmlNoteTable()
+	        .replace("triangle", "<img src='file:src/image/triangle.png' width='25' height='25'>") // Images plus grandes
+	        .replace("carree", "<img src='file:src/image/carree.png' width='25' height='25'>")
+	        .replace("rond", "<img src='file:src/image/rond.png' width='25' height='25'>")
+	        .replace("\n", "<br>");
+
+	JLabel htmlLabel = new JLabel("<html><div style='text-align: center;'>" + htmlText + "</div></html>");
+	htmlLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT); // Centrer horizontalement le texte
+	menuPanel.add(htmlLabel);
+
+	// Créer un sous-panneau pour les boutons
+	JPanel buttonPanel = new JPanel();
+	buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Centrer les boutons et ajouter un espace entre eux
+
+	// Ajouter le bouton "Quitter la Partie" avec le style du bouton "Annuler"
+	JButton quitButton = new JButton("Quitter la Partie") {
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	        Graphics2D g2 = (Graphics2D) g.create();
+	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+	        // Fond arrondi
+	        g2.setColor(getBackground());
+	        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+
+	        // Texte
+	        super.paintComponent(g2);
+	        g2.dispose();
+	    }
+	};
+
+	quitButton.setForeground(Color.WHITE); // Couleur du texte
+	quitButton.setBackground(new Color(255, 223, 51)); // Jaune clair
+	quitButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding
+	quitButton.setFocusPainted(false); // Retirer le focus
+
+	// Effet de survol pour le bouton "Quitter la Partie"
+	quitButton.addMouseListener(new MouseAdapter() {
+	    @Override
+	    public void mouseEntered(MouseEvent e) {
+	        quitButton.setBackground(new Color(255, 204, 0)); // Jaune plus foncé
+	    }
+
+	    @Override
+	    public void mouseExited(MouseEvent e) {
+	        quitButton.setBackground(new Color(255, 223, 51)); // Retour au jaune clair
+	    }
+	});
+
+
+	buttonPanel.add(quitButton);
+
+	// Ajouter le bouton "Recommencer la Partie" avec le style du bouton "OK"
+	JButton restartButton = new JButton("Recommencer") {
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	        Graphics2D g2 = (Graphics2D) g.create();
+	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+	        // Fond arrondi
+	        g2.setColor(getBackground());
+	        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+
+	        // Texte
+	        super.paintComponent(g2);
+	        g2.dispose();
+	    }
+	};
+
+	restartButton.setForeground(Color.WHITE); // Couleur du texte
+	restartButton.setBackground(new Color(0, 153, 204)); // Bleu clair
+	restartButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Padding
+	restartButton.setFocusPainted(false); // Retirer le focus
+
+	// Effet de survol pour le bouton "Recommencer la Partie"
+	restartButton.addMouseListener(new MouseAdapter() {
+	    @Override
+	    public void mouseEntered(MouseEvent e) {
+	        restartButton.setBackground(new Color(0, 102, 153)); // Bleu plus foncé
+	    }
+
+	    @Override
+	    public void mouseExited(MouseEvent e) {
+	        restartButton.setBackground(new Color(0, 153, 204)); // Retour au bleu clair
+	    }
+	});
+
+	restartButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        //restartGame();
+	    }
+	});
+	buttonPanel.add(restartButton);
+
+	// Ajouter le sous-panneau des boutons au menuPanel
+	buttonPanel.setAlignmentX(JPanel.CENTER_ALIGNMENT); // Centrer horizontalement le sous-panneau
+	menuPanel.add(buttonPanel);
+
+	
+	
+	 
+	// Créer un JOptionPane personnalisé
+	JOptionPane optionPane = new JOptionPane(menuPanel, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+
+	// Créer un JDialog à partir du JOptionPane
+	JDialog dialog = optionPane.createDialog("Menu de la Partie");
+	dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Fermer correctement
+	dialog.setModal(true);
+	
+	ImageIcon icon = new ImageIcon("src/image/Turing-logo.png"); // Charger l'image
+	dialog.setIconImage(icon.getImage()); // Définir l'icône pour le JDialog
+
+	// Ajouter des actions de fermeture aux boutons
+	quitButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        dialog.dispose(); // Fermer la fenêtre
+	        dispose();
+	    }
+	});
+
+	restartButton.addActionListener(new ActionListener() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        dialog.dispose(); // Fermer la fenêtre
+	        
+	     // Autres réinitialisations nécessaires pour l'interface
+	        resetLives();
+	        resetAllCards();
+	        resetTextFields();
+
+	        controller.setListeActJoueur(new LinkedList<>(controller.getListeDefJoueur()));
+	        
+	        // Réinitialiser les variables de suivi de la partie
+	        manche = 1;
+	        currentPlayerIndex = 0;
+	        essaisParJoueur = new int[controller.getListeActJoueur().size()];
+	        cartesTestees.clear();
+	        for (Joueur joueur : controller.getListeActJoueur()) {
+	            joueur.resetStats(); // Créez une méthode resetStats() dans la classe Joueur pour réinitialiser les stats du joueur
+	        }
+	        
+	        // Réinitialiser les résultats des tests
+	        for (int i = 0; i < testResults.length; i++) {
+	            testResults[i] = '2';
+	        }
+
+	        // Réinitialiser l'affichage
+	        mancheLabel.setText("Manche : " + manche);
+	        int indexPlayer = currentPlayerIndex + 1;
+	        playerTurnLabel.setText("Tour du joueur " + indexPlayer + " : " + controller.getListeActJoueur().get(currentPlayerIndex).getPseudo());
+
+	        System.out.println("kk");
+	        
+	    }
+	});
+
+	// Afficher la fenêtre
+	dialog.setVisible(true);
+	
+}
+
+
+
 
     }
 

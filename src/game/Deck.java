@@ -5,9 +5,8 @@ import java.util.LinkedList;
 
 public class Deck {
 
-	int solution;
-	
-	LinkedList<Carte> Liste;
+	private int solution;
+	private LinkedList<Carte> Liste;
 	
 	
 	
@@ -74,6 +73,9 @@ public class Deck {
     	}
     }
 
+    public Carte getCarteIndex(int index) {
+    	return this.Liste.get(index);
+    }
 
 
     public int getSolution() {

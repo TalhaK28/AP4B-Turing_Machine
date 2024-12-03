@@ -1,28 +1,21 @@
 package game;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Joueur {
 
-	String pseudo;
-	boolean tryFinalProp;//essayer de donner une valeur
-	int triangle; //première valeur entrée par le joueur
-	int carree; //deuxième valeur entrée par le joueur
-	int rond;//troisième valeur entrée par le joueur
-	int nbQuestion;
-	String note; //les notes (informations) gagnés aux cours des manches précédentes
-	int proposition;
-	
-	
+	private String pseudo;
+	private int nbQuestion;
+	private Map<Integer, String> note; //les notes (informations) gagnés aux cours des manches précédentes
+
 	
 	
     // Constructeur
     public Joueur(String pseudo) {
         this.pseudo = pseudo;
-        this.tryFinalProp = false;
-        this.triangle = 0;
-        this.carree = 0;
-        this.rond = 0;
         this.nbQuestion = 0;
-        this.note = "";
+        this.note = new LinkedHashMap<>();
     }
 
     // Getter et Setter pour pseudo
@@ -32,42 +25,6 @@ public class Joueur {
 
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
-    }
-
-    // Getter et Setter pour tryFinalProp
-    public boolean isTryFinalProp() {
-        return tryFinalProp;
-    }
-
-    public void setTryFinalProp(boolean tryFinalProp) {
-        this.tryFinalProp = tryFinalProp;
-    }
-
-    // Getter et Setter pour triangle
-    public int getTriangle() {
-        return triangle;
-    }
-
-    public void setTriangle(int triangle) {
-        this.triangle = triangle;
-    }
-
-    // Getter et Setter pour carree
-    public int getCarree() {
-        return carree;
-    }
-
-    public void setCarree(int carree) {
-        this.carree = carree;
-    }
-
-    // Getter et Setter pour rond
-    public int getRond() {
-        return rond;
-    }
-
-    public void setRond(int rond) {
-        this.rond = rond;
     }
 
     // Getter et Setter pour nbQuestion
@@ -80,16 +37,87 @@ public class Joueur {
     }
 
     // Getter et Setter pour note
-    public String getNote() {
-        return note;
+    public Map<Integer, String> getNote() {
+        return this.note;
     }
 
-    public void setNote(String note) {
+    public void setNote(Map<Integer, String> note) {
         this.note = note;
     }
-	
-    public void setProposition(int p) {
-    	this.proposition=p;
+    
+    public void addNote(int proposition, String tests) {
+        // Générer une clé unique en concaténant proposition avec la taille actuelle de la Map
+        int uniqueKey = Integer.parseInt(proposition + String.valueOf(this.note.size()));
+        this.note.put(uniqueKey, tests);
     }
+    
+    public String generateHtmlNoteTable() {
+
+    StringBuilder htmlTable = new StringBuilder();
+
+    // Début du tableau HTML
+    htmlTable.append("<table border='4' style='border-collapse:collapse; text-align:center; width: 80%; margin: 20px auto; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0,0,0,0.1);'>");
+
+    // Ajouter les titres des colonnes
+    htmlTable.append("<thead style='background-color: #f2f2f2;'>");
+    htmlTable.append("<tr style='height: 50px;'>");
+    htmlTable.append("<th style='padding: 10px;'>triangle</th>");
+    htmlTable.append("<th style='padding: 10px;'>carree</th>");
+    htmlTable.append("<th style='padding: 10px;'>rond</th>");
+
+    // Calcul du nombre maximum de colonnes
+    int maxColumns = this.note.values().stream().mapToInt(String::length).max().orElse(0);
+    for (int n = 1; n <= maxColumns; n++) {
+        htmlTable.append("<th style='padding: 10px;'>").append(n).append("</th>");
+    }
+    htmlTable.append("</tr></thead>");
+
+    // Ajouter les données des lignes
+    htmlTable.append("<tbody>");
+    for (Map.Entry<Integer, String> entry : this.note.entrySet()) {
+        String key = String.valueOf(entry.getKey()); // Convertir la clé en chaîne
+        String value = entry.getValue(); // Récupérer la chaîne associée
+
+        // Extraire les valeurs triangle, carré et rond
+        String triangle = key.length() > 0 ? String.valueOf(key.charAt(0)) : "";
+        String carree = key.length() > 1 ? String.valueOf(key.charAt(1)) : "";
+        String rond = key.length() > 2 ? String.valueOf(key.charAt(2)) : "";
+
+        // Début de la ligne
+        htmlTable.append("<tr style='height: 60px;'>");
+        htmlTable.append("<td style='padding: 10px;'>").append(triangle).append("</td>");
+        htmlTable.append("<td style='padding: 10px;'>").append(carree).append("</td>");
+        htmlTable.append("<td style='padding: 10px;'>").append(rond).append("</td>");
+
+        // Ajouter les colonnes en fonction de la valeur
+        for (int i = 0; i < maxColumns; i++) {
+            if (i < value.length()) {
+                char c = value.charAt(i);
+                switch (c) {
+                    case '1' -> htmlTable.append("<td style='padding: 10px;'><img src='file:src/image/valid.png' width='60' height='60'></td>");
+                    case '0' -> htmlTable.append("<td style='padding: 10px;'><img src='file:src/image/invalid.png' width='60' height='60'></td>");
+                    default -> htmlTable.append("<td style='padding: 10px;'></td>"); // Cellule vide pour les autres caractères
+                }
+            } else {
+                htmlTable.append("<td style='padding: 10px;'></td>"); // Cellule vide si aucune valeur
+            }
+        }
+
+        // Fin de la ligne
+        htmlTable.append("</tr>");
+    }
+    htmlTable.append("</tbody>");
+    htmlTable.append("</table>");
+
+    return htmlTable.toString();
+}
+    
+    public void resetStats() {
+        this.nbQuestion = 0;
+        this.note.clear(); // Si vous avez une liste de notes ou de scores
+    }
+
+
+	
 	
 }
