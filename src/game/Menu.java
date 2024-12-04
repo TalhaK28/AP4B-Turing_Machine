@@ -301,14 +301,23 @@ public class Menu extends JFrame {
                     
                     int playerCount = (int) playerCountSpinner.getValue();
 
-                    // Récupérez les noms des joueurs
-                    Component[] components = playerNamesPanel.getComponents();
-                    List<String> playerNames = new ArrayList<>();
-                    for (Component comp : components) {
-                        if (comp instanceof JTextField) {
-                            playerNames.add(((JTextField) comp).getText());
-                        }
-                    }
+                 // Récupérez les noms des joueurs
+                 Component[] components = playerNamesPanel.getComponents();
+                 List<String> playerNames = new ArrayList<>();
+                 int index = 0;
+                 for (Component comp : components) {
+                     if (comp instanceof JTextField) {
+                         index++;
+                         String playerName = ((JTextField) comp).getText().trim();  // Utilisation de .trim() pour enlever les espaces inutiles
+                         if (!playerName.isEmpty()) {  // Vérifier si le champ n'est pas vide
+                             playerNames.add(playerName);
+                         } else {
+                             String name = "Joueur" + index;
+                             playerNames.add(name);
+                         }
+                     }
+                 }
+
                     
                     LinkedList<Joueur> Jliste = new LinkedList<>();
                     

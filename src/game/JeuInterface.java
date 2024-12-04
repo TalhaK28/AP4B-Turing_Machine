@@ -417,13 +417,15 @@ import java.io.InputStream;
         	String readableResults = String.valueOf(this.testResults);
 
         	
-        	
+        	if(controller.getCarree()!=0 && controller.getTriangle()!=0 &&controller.getRond()!=0 ) {
         	controller.getListeActJoueur().get(currentPlayerIndex).addNote(controller.getVal(),readableResults);
+        	}
         	
         	// 	Réinitialiser le suivi des résultats des tests
         	for(int i=0;i<this.testResults.length; i++) {
         		testResults[i]='2';
         	}
+        	controller.resetVal();
         	
 
             if (++currentPlayerIndex >= controller.getListeActJoueur().size()) {
@@ -456,21 +458,35 @@ import java.io.InputStream;
                     JOptionPane.YES_NO_OPTION);
 
             if (option == JOptionPane.YES_OPTION) {
-                int proposition = Integer.parseInt(JOptionPane.showInputDialog(this, "Entrez votre proposition :"));
-                controller.setPropositionFinal(proposition);
+                String input = null;
+                while (true) {
+                    input = JOptionPane.showInputDialog(this, "Entrez votre proposition (exactement 3 chiffres, chacun entre 1 et 5) :");
 
-                if (controller.testProp()) {
-                    joueursAyantPropose.add(joueur);
-                    i++;
-                } else {
-                	pseudoPropositionRatee.add(joueur.getPseudo());
-                    iterator.remove();  // Supprime l'élément de la liste pendant l'itération
-                    i--;
-                	
+                    // Si l'utilisateur clique sur "Annuler", passer au joueur suivant
+                    if (input == null) {
+                        JOptionPane.showMessageDialog(this, "Vous avez choisi de ne pas faire de proposition.", "Information", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    }
+
+                    // Vérification de l'entrée
+                    if (input.matches("[1-5]{3}")) {
+                        // Utiliser la valeur validée
+                        controller.setPropositionFinal(Integer.parseInt(input));
+
+                        if (controller.testProp()) {
+                            joueursAyantPropose.add(joueur);
+                        } else {
+                            pseudoPropositionRatee.add(joueur.getPseudo());
+                            iterator.remove(); // Supprime l'élément de la liste pendant l'itération
+                        }
+                        break; // Sortir de la boucle si l'entrée est valide
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Veuillez entrer exactement 3 chiffres entre 1 et 5.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         }
-        
+
     
 
         if (joueursAyantPropose.isEmpty()) {
@@ -584,7 +600,25 @@ import java.io.InputStream;
        }
    }
 
-   
+   private void limitToThreeDigit(JTextField textField) {
+	    ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
+	    	@Override
+	    	public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+	    	    // Obtenir le texte actuel du document
+	    	    String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
+	    	    
+	    	    // Construire le texte final après remplacement
+	    	    String newText = new StringBuilder(currentText).replace(offset, offset + length, text).toString();
+
+	    	    // Vérifier que la nouvelle chaîne respecte les conditions
+	    	    if (newText.matches("[1-5]{0,3}")) { // 0 à 3 caractères, tous entre 1 et 5
+	    	        super.replace(fb, offset, length, text, attrs);
+	    	    }
+	    	}
+	    	});
+	}
+
+	    
    
    
    private void limitToOneDigit(JTextField textField) {
@@ -597,7 +631,7 @@ import java.io.InputStream;
 	                super.replace(fb, offset, length, text, attrs);
 	            }
 	            // Permet d'ajouter un seul chiffre (si le texte n'est pas vide et contient un chiffre)
-	            else if (text.matches("\\d") && fb.getDocument().getLength() < 1) {
+	            else if (text.matches("[1-5]") && fb.getDocument().getLength() < 1) {
 	                super.replace(fb, offset, length, text, attrs);
 	            }
 	        }
@@ -840,7 +874,9 @@ private void showMenu() {
 	        resetAllCards();
 	        resetTextFields();
 
+	        
 	        controller.setListeActJoueur(new LinkedList<>(controller.getListeDefJoueur()));
+	        
 	        
 	        // Réinitialiser les variables de suivi de la partie
 	        manche = 1;
@@ -860,8 +896,6 @@ private void showMenu() {
 	        mancheLabel.setText("Manche : " + manche);
 	        int indexPlayer = currentPlayerIndex + 1;
 	        playerTurnLabel.setText("Tour du joueur " + indexPlayer + " : " + controller.getListeActJoueur().get(currentPlayerIndex).getPseudo());
-
-	        System.out.println("kk");
 	        
 	    }
 	});

@@ -17,6 +17,18 @@ public class Joueur {
         this.nbQuestion = 0;
         this.note = new LinkedHashMap<>();
     }
+    
+    // Constructeur par copie
+    public Joueur(Joueur j) {
+        this.pseudo = j.pseudo; // Copie du pseudo
+        this.nbQuestion = j.nbQuestion; // Copie du nombre de questions
+
+        // Copie profonde de la Map note
+        this.note = new LinkedHashMap<>();
+        for (Map.Entry<Integer, String> entry : j.note.entrySet()) {
+            this.note.put(entry.getKey(), entry.getValue());
+        }
+    }
 
     // Getter et Setter pour pseudo
     public String getPseudo() {

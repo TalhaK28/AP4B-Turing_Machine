@@ -40,8 +40,13 @@ public class Jeu {
 		
 		this.nbDemande=0;
 		
-		this.listeActJoueur=Liste;
-		this.listeDefJoueur=Liste;
+        this.listeActJoueur = new LinkedList<>(Liste); // Copie superficielle
+        this.listeDefJoueur = new LinkedList<>();
+        
+        // Effectuer une copie profonde
+        for (Joueur joueur : Liste) {
+            this.listeDefJoueur.add(new Joueur(joueur)); // Supposez un constructeur de copie
+        }
 		
 		this.testProp = false;
 		this.propositionFinal = 0;
@@ -63,7 +68,7 @@ public class Jeu {
 	// Getters and Setters
 
     public LinkedList<Joueur> getListeDefJoueur() {
-        return listeDefJoueur;
+        return this.listeDefJoueur;
     }
 
     public void setListeDefJoueur(LinkedList<Joueur> listeDefJoueur) {
@@ -71,7 +76,7 @@ public class Jeu {
     }
 
     public LinkedList<Joueur> getListeActJoueur() {
-        return listeActJoueur;
+        return this.listeActJoueur;
     }
 
     public void setListeActJoueur(LinkedList<Joueur> listeActJoueur) {
@@ -99,6 +104,12 @@ public class Jeu {
         this.triangle = triangle;
         this.carree = carree;
         this.rond = rond;
+    }
+    
+    public void resetVal() {
+    	this.triangle = 0;
+        this.carree = 0;
+        this.rond = 0;
     }
     
     public int getVal() {
