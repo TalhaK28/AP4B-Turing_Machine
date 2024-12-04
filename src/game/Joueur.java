@@ -48,6 +48,10 @@ public class Joueur {
         this.nbQuestion = nbQuestion;
     }
 
+    public void upNbQuestion() {
+    	this.nbQuestion++;
+    }
+    
     // Getter et Setter pour note
     public Map<Integer, String> getNote() {
         return this.note;

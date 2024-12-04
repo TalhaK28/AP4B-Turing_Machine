@@ -380,7 +380,7 @@ public class Menu extends JFrame {
         });
 
         // Produced by label
-        JLabel producedByLabel = new JLabel("Produit par Samuel, Nizard, Gaëlle et Talha");
+        JLabel producedByLabel = new JLabel("Produit par Samuel, Nizar, Gaëlle et Talha");
         producedByLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         producedByLabel.setFont(new Font("Arial", Font.BOLD, 12));
         producedByLabel.setHorizontalAlignment(SwingConstants.CENTER);

@@ -12,7 +12,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.List;
 
 import javax.swing.text.*;
 
@@ -142,8 +145,8 @@ import java.io.InputStream;
             // Ajouter 3 JLabels pour les vies avec redimensionnement
             lifeLabels = new JLabel[3];
             lifeStates = new String[3];  // Initialisation des états des vies
-            int iconWidth = 30; // Largeur de l'icône
-            int iconHeight = 30; // Hauteur de l'icône
+            int iconWidth = 70; // Largeur de l'icône
+            int iconHeight = 70; // Hauteur de l'icône
 
             for (int i = 0; i < 3; i++) {
                 // Initialiser l'état de chaque vie
@@ -196,7 +199,7 @@ import java.io.InputStream;
                 // Label pour la description de la carte
                 JLabel cardLabel = new JLabel("<html><div style='text-align: center;'>" + descriptifHtml + "</div></html>");
                 cardLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                cardLabel.setFont(new Font("Hexaplex", Font.BOLD, 14)); // Utilisation de la police Hexaplex;
+                cardLabel.setFont(new Font("Hexaplex", Font.BOLD, 22)); // Utilisation de la police Hexaplex;
                 cardLabel.setForeground(new Color(50, 50, 50)); // Couleur de texte plus douce
                 cardLabel.setBackground(new Color(240, 240, 240)); // Fond léger pour mettre en valeur le texte
                 cardLabel.setOpaque(true); // Nécessaire pour afficher l'arrière-plan
@@ -338,10 +341,15 @@ import java.io.InputStream;
             panel.setLayout(new BorderLayout());
             panel.setOpaque(false);
 
+           
             // Créer l'image avec JLabel
-            JLabel imageLabel = new JLabel(new ImageIcon(imagePath));
-            imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            panel.add(imageLabel, BorderLayout.CENTER);
+            ImageIcon newIcon = new ImageIcon(imagePath); // Charger l'image depuis le chemin
+            Image resizedImage = newIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH); // Redimensionner l'image
+            ImageIcon resizedIcon = new ImageIcon(resizedImage); // Créer une ImageIcon à partir de l'image redimensionnée
+            JLabel imageLabel = new JLabel(resizedIcon); // Ajouter l'ImageIcon au JLabel
+            imageLabel.setHorizontalAlignment(SwingConstants.CENTER); // Centrer l'image horizontalement
+            panel.add(imageLabel, BorderLayout.CENTER); // Ajouter le JLabel au panel
+
 
             // Créer le JTextField
             JTextField textField = new JTextField();
@@ -508,16 +516,32 @@ import java.io.InputStream;
             playerTurnLabel.setText("Tour du joueur "+ indexPlayer +  " :" + controller.getListeActJoueur().get(currentPlayerIndex).getPseudo());
 
         } else {
-            Optional<Joueur> gagnant = joueursAyantPropose.stream()
-                    .min((j1, j2) -> Integer.compare(j1.getNbQuestion(), j2.getNbQuestion()));
+        	OptionalInt minNbQuestion = joueursAyantPropose.stream()
+        	        .mapToInt(Joueur::getNbQuestion)
+        	        .min();
 
-            if (gagnant.isPresent()) {
-                JOptionPane.showMessageDialog(this,
-                        "Félicitations " + gagnant.get().getPseudo() + ", vous avez gagné avec " + gagnant.get().getNbQuestion() + " demandes !",
-                        "Fin de la partie",
-                        JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-            }
+        	if (minNbQuestion.isPresent()) {
+        	    int minValue = minNbQuestion.getAsInt();
+
+        	    // Trouver tous les joueurs ayant le nombre minimal de questions
+        	    List<Joueur> gagnants = joueursAyantPropose.stream()
+        	            .filter(j -> j.getNbQuestion() == minValue)
+        	            .toList();
+
+        	    // Construire une chaîne de pseudos pour les gagnants
+        	    String pseudosGagnants = gagnants.stream()
+        	            .map(Joueur::getPseudo)
+        	            .collect(Collectors.joining(", "));
+
+        	    // Afficher les gagnants
+        	    JOptionPane.showMessageDialog(this,
+        	            "Félicitations aux gagnants : " + pseudosGagnants + " avec " + minValue + " demandes !",
+        	            "Fin de la partie",
+        	            JOptionPane.INFORMATION_MESSAGE);
+
+        	    dispose();
+        	}
+
         }
     }
 
@@ -551,6 +575,10 @@ import java.io.InputStream;
 
         cartesTestees.add(index);
         essaisParJoueur[currentPlayerIndex]++;
+        
+        
+        controller.getListeActJoueur().get(currentPlayerIndex).upNbQuestion();
+     
 
         // Tester la carte et obtenir le résultat
         boolean result = controller.testCarte(index);
@@ -715,7 +743,7 @@ private void utiliseTest() {
          // Met à jour l'icône de la vie
          ImageIcon newIcon = new ImageIcon("src/image/testUtilise.png");
          newIcon.setDescription("testUtilise");
-         Image resizedImage = newIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+         Image resizedImage = newIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
          lifeLabels[i].setIcon(new ImageIcon(resizedImage));
          break;  // On ne modifie qu'une vie à la fois
      }
@@ -730,7 +758,7 @@ private void resetLives() {
      // Remet l'icône de la vie à son état initial
      ImageIcon newIcon = new ImageIcon("src/image/testDispo.png");
      newIcon.setDescription("testDispo");
-     Image resizedImage = newIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+     Image resizedImage = newIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
      lifeLabels[i].setIcon(new ImageIcon(resizedImage));
  }
 }

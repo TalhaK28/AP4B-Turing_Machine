@@ -1,5 +1,5 @@
 >3
-La valeur de carré est comparée à 3.
+La valeur de carree est comparée à 3.
 ---
 carree &lt; 3
 ---
