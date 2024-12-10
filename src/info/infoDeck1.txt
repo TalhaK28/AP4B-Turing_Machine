@@ -10,11 +10,14 @@ carree > 3
 1
 Une des valeurs est égale à 1.
 ---
-triangle = 1
+triangle 
 ---
-carree = 1
+	carree ?  rond   = 1
 ---
-rond = 1
+triangle 
+---
+	carree ?  rond   != 1
+
 
 &lt;
 triangle est comparé à carree.
