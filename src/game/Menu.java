@@ -1,5 +1,10 @@
 package game;
 
+import javafx.scene.control.Button;
+import javafx.geometry.Pos;
+import javafx.scene.layout.StackPane;
+
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -21,13 +26,26 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
+
 import java.awt.Dimension;
 
+import java.util.Timer;
+import java.util.TimerTask;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.InputStream;
 import javax.swing.GroupLayout.Alignment;
+import javafx.scene.layout.StackPane;  
 
 import java.util.LinkedList;
 
@@ -326,12 +344,26 @@ public class Menu extends JFrame {
                     	Jliste.add(player);
                     }
                     
-                    
                     dialog.dispose();
-                    dispose();
+                    playVideo(dialog, Jliste, sDifficulty);
                     
-                    JeuInterface frame = new JeuInterface(Jliste, sDifficulty);
-					frame.setVisible(true);
+                 // Créer un Timer et une tâche
+                    Timer timer = new Timer();
+                    TimerTask task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            // Action à faire après le délai
+                        	
+                            dispose();
+                        }
+                    };
+
+                    // Délai de 2 secondes (2000 millisecondes)
+                    timer.schedule(task, 3000); 
+                    
+                    
+                    
+                    
 
                     
                 });
@@ -490,6 +522,94 @@ public class Menu extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dispose();
     }
+
+    private void playVideo(Dialog dialog, LinkedList<Joueur> Jliste, int sDifficulty) {
+        // Lancer JavaFX dans un thread séparé en initialisant le toolkit JavaFX
+        SwingUtilities.invokeLater(() -> {
+            // Initialiser JavaFX si ce n'est pas encore fait
+            JFXPanel jfxPanel = new JFXPanel(); // Cela initialise le toolkit JavaFX
+
+            // Créer le JFrame pour afficher la vidéo
+            JFrame videoFrame = new JFrame("Vidéo");
+            videoFrame.setSize(800, 600);
+            videoFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            // Créer et ajouter la scène JavaFX
+            Scene scene = createVideoScene(dialog, Jliste, sDifficulty, videoFrame);
+            jfxPanel.setScene(scene);
+            videoFrame.add(jfxPanel);
+
+            // Passer en plein écran
+            videoFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiser la fenêtre
+            videoFrame.setUndecorated(true); // Enlever la barre de titre
+            videoFrame.setResizable(false); // Désactiver le redimensionnement de la fenêtre
+            videoFrame.setVisible(true);
+        });
+    }
+
+    private Scene createVideoScene(Dialog dialog, LinkedList<Joueur> Jliste, int sDifficulty, JFrame videoFrame) {
+        // Remplacez par le chemin de votre vidéo
+        String videoPath = "src/video/intro_Video.mp4"; // Mettez ici le chemin de votre vidéo
+        Media media = new Media(new File(videoPath).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        MediaView mediaView = new MediaView(mediaPlayer);
+
+        // Créer un conteneur pour la scène JavaFX
+        StackPane root = new StackPane();
+        root.getChildren().add(mediaView);  // Ajouter le MediaView dans le conteneur
+
+        // Créer un bouton transparent pour passer à la fin de la vidéo
+        Button skipButton = new Button("Passer la vidéo");
+        skipButton.setStyle(
+        	    "-fx-background-color: transparent; " +
+        	    "-fx-text-fill: white; " + 
+        	    "-fx-font-family: 'Arial'; " + // Police de caractères
+        	    "-fx-font-size: 18px; " + // Taille du texte
+        	    "-fx-font-weight: bold; " + // Gras
+        	    "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 5, 0, 2, 2); " + // Ombre portée
+        	    "-fx-padding: 10px 20px; " + // Marges autour du texte
+        	    "-fx-border-width: 2px; " + // Largeur de la bordure
+        	    "-fx-border-color: white; " + // Couleur de la bordure
+        	    "-fx-border-radius: 10px;" // Bordure arrondie
+        	);
+        skipButton.setOnAction(e -> skipToEnd(mediaPlayer));  // Passer à la fin de la vidéo
+
+        // Placer le bouton en bas à droite
+        StackPane.setAlignment(skipButton, Pos.BOTTOM_RIGHT);
+        root.getChildren().add(skipButton);
+
+        // Configurer la lecture automatique
+        mediaPlayer.setAutoPlay(true);
+
+        JeuInterface frame = new JeuInterface(Jliste, sDifficulty);
+        
+        // Ajouter un événement pour surveiller la fin de la vidéo
+        mediaPlayer.setOnEndOfMedia(() -> {
+        	
+            Platform.runLater(() -> {
+                // Fermer la fenêtre vidéo et afficher le jeu
+                dialog.dispose(); // Fermer le dialogue vidéo
+                
+                // Créer et afficher le jeu
+                
+                frame.setVisible(true);
+                videoFrame.dispose(); // Fermer la fenêtre vidéo
+
+                
+            });
+        });
+
+        // Retourner la scène avec le conteneur
+        return new Scene(root, 800, 600);
+    }
+
+    private void skipToEnd(MediaPlayer mediaPlayer) {
+        // Avancer la vidéo jusqu'à la fin
+        if (mediaPlayer != null) {
+            mediaPlayer.seek(mediaPlayer.getMedia().getDuration());
+        }
+    }
+
 
 
 }
