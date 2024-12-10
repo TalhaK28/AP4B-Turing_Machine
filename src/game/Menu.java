@@ -581,6 +581,7 @@ public class Menu extends JFrame {
         // Configurer la lecture automatique
         mediaPlayer.setAutoPlay(true);
 
+        
         JeuInterface frame = new JeuInterface(Jliste, sDifficulty);
         
         // Ajouter un événement pour surveiller la fin de la vidéo
