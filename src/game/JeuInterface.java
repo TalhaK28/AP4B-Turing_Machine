@@ -534,7 +534,7 @@ import java.io.InputStream;
 
         	    // Afficher les gagnants
         	    JOptionPane.showMessageDialog(this,
-        	            "Félicitations aux gagnants : " + pseudosGagnants + " avec " + minValue + " demandes !",
+        	            "Félicitations vous avez sauvé, agents : " + pseudosGagnants + " avec " + minValue + " demandes !",
         	            "Fin de la partie",
         	            JOptionPane.INFORMATION_MESSAGE);
 
@@ -627,26 +627,9 @@ import java.io.InputStream;
        }
    }
 
-   private void limitToThreeDigit(JTextField textField) {
-	    ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
-	    	@Override
-	    	public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-	    	    // Obtenir le texte actuel du document
-	    	    String currentText = fb.getDocument().getText(0, fb.getDocument().getLength());
-	    	    
-	    	    // Construire le texte final après remplacement
-	    	    String newText = new StringBuilder(currentText).replace(offset, offset + length, text).toString();
 
-	    	    // Vérifier que la nouvelle chaîne respecte les conditions
-	    	    if (newText.matches("[1-5]{0,3}")) { // 0 à 3 caractères, tous entre 1 et 5
-	    	        super.replace(fb, offset, length, text, attrs);
-	    	    }
-	    	}
-	    	});
-	}
+	
 
-	    
-   
    
    private void limitToOneDigit(JTextField textField) {
 	    ((AbstractDocument) textField.getDocument()).setDocumentFilter(new DocumentFilter() {
