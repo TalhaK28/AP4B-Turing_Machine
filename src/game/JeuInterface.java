@@ -452,7 +452,7 @@ import java.io.InputStream;
     
 
     private void finDeManche() {
-        int i = 0;
+        
         LinkedList<Joueur> joueursAyantPropose = new LinkedList<>();
         LinkedList<String> pseudoPropositionRatee = new LinkedList<>();
         Iterator<Joueur> iterator = controller.getListeActJoueur().iterator();
@@ -499,9 +499,21 @@ import java.io.InputStream;
         if (joueursAyantPropose.isEmpty()) {
         	
         	if(!pseudoPropositionRatee.isEmpty()) {
+        		
         		for(int i1=0; i1<pseudoPropositionRatee.size(); i1++) {
         		JOptionPane.showMessageDialog(JeuInterface.this, "Le joueur " + pseudoPropositionRatee.get(i1)+ " s'est trompé" , "Erreur", JOptionPane.ERROR_MESSAGE);
         		}
+        		
+        		if(controller.getListeActJoueur().isEmpty()) {
+            		JOptionPane.showMessageDialog(this,
+            	            "Agents ! L'UTBM est perdu, vous n'avez pas été à la hauteur de votre mission",
+            	            "Fin de la partie",
+            	            JOptionPane.ERROR_MESSAGE);
+            	  //  Menu frame = new Menu();
+            	  //  frame.setVisible(true);
+            	    dispose();
+            	    return;
+            	}
         	}
             manche++;
             essaisParJoueur = new int[controller.getListeActJoueur().size()];
@@ -534,10 +546,11 @@ import java.io.InputStream;
 
         	    // Afficher les gagnants
         	    JOptionPane.showMessageDialog(this,
-        	            "Félicitations vous avez sauvé, agents : " + pseudosGagnants + " avec " + minValue + " demandes !",
+        	            "Félicitations vous avez sauvé l'UTBM, agents : " + pseudosGagnants + " avec " + minValue + " demandes !",
         	            "Fin de la partie",
         	            JOptionPane.INFORMATION_MESSAGE);
-
+        	    //Menu frame = new Menu();
+        	    //frame.setVisible(true);
         	    dispose();
         	}
 

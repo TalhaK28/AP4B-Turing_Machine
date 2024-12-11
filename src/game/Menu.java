@@ -330,7 +330,7 @@ public class Menu extends JFrame {
                          if (!playerName.isEmpty()) {  // Vérifier si le champ n'est pas vide
                              playerNames.add(playerName);
                          } else {
-                             String name = "Joueur" + index;
+                             String name = "Agent " + index;
                              playerNames.add(name);
                          }
                      }
@@ -483,44 +483,31 @@ public class Menu extends JFrame {
             }
         });
         
-        // Layout
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
-        	gl_contentPane.createParallelGroup(Alignment.LEADING)
-        		.addGroup(gl_contentPane.createSequentialGroup()
-        			.addContainerGap(200, Short.MAX_VALUE)
-        			.addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 600, Short.MAX_VALUE)
-        			.addGap(200))
-        		.addGroup(gl_contentPane.createSequentialGroup()
-        			.addContainerGap(773, Short.MAX_VALUE)
-        			.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-        				.addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE))
-        			.addGap(456))
-        		.addGroup(gl_contentPane.createSequentialGroup()
-        			.addGap(107)
-        			.addComponent(producedByLabel, GroupLayout.DEFAULT_SIZE, 1376, Short.MAX_VALUE)
-        			.addGap(115))
+            gl_contentPane.createParallelGroup(Alignment.CENTER) // Alignement horizontal centré pour tout
+                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE)
+                .addGroup(gl_contentPane.createSequentialGroup()
+                    .addGroup(gl_contentPane.createParallelGroup(Alignment.CENTER)
+                        .addComponent(startButton, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
+                    )
+                )
+                .addComponent(producedByLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         gl_contentPane.setVerticalGroup(
-        	gl_contentPane.createParallelGroup(Alignment.LEADING)
-        		.addGroup(gl_contentPane.createSequentialGroup()
-        			.addGap(46)
-        			.addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 380, GroupLayout.PREFERRED_SIZE)
-        			.addGap(30)
-        			.addComponent(startButton, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
-        			.addGap(28)
-        			.addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
-        			.addGap(23)
-        			.addComponent(producedByLabel)
-        			.addGap(52))
+            gl_contentPane.createSequentialGroup()
+                .addGap(46)
+                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 380, GroupLayout.PREFERRED_SIZE)
+                .addGap(30)
+                .addComponent(startButton, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+                .addGap(28)
+                .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+                .addGap(23)
+                .addComponent(producedByLabel)
+                .addGap(52)
         );
         contentPane.setLayout(gl_contentPane);
-    }
-
-    public void disposeWithoutExiting() {
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        dispose();
     }
 
     private void playVideo(Dialog dialog, LinkedList<Joueur> Jliste, int sDifficulty) {
@@ -548,8 +535,8 @@ public class Menu extends JFrame {
     }
 
     private Scene createVideoScene(Dialog dialog, LinkedList<Joueur> Jliste, int sDifficulty, JFrame videoFrame) {
-        // Remplacez par le chemin de votre vidéo
-        String videoPath = "src/video/intro_Video.mp4"; // Mettez ici le chemin de votre vidéo
+        
+        String videoPath = "src/video/intro_Video.mp4"; 
         Media media = new Media(new File(videoPath).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         MediaView mediaView = new MediaView(mediaPlayer);
@@ -590,7 +577,7 @@ public class Menu extends JFrame {
             Platform.runLater(() -> {
                 // Fermer la fenêtre vidéo et afficher le jeu
                 dialog.dispose(); // Fermer le dialogue vidéo
-                
+                mediaPlayer.dispose(); // Libère les ressources du MediaPlayer
                 // Créer et afficher le jeu
                 
                 frame.setVisible(true);
