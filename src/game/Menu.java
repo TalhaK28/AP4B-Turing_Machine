@@ -485,10 +485,10 @@ public class Menu extends JFrame {
         
         GroupLayout gl_contentPane = new GroupLayout(contentPane);
         gl_contentPane.setHorizontalGroup(
-            gl_contentPane.createParallelGroup(Alignment.CENTER) // Alignement horizontal centré pour tout
-                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE)
+            gl_contentPane.createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE) // Image centrée
                 .addGroup(gl_contentPane.createSequentialGroup()
-                    .addGroup(gl_contentPane.createParallelGroup(Alignment.CENTER)
+                    .addGroup(gl_contentPane.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addComponent(startButton, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
                         .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
                     )
@@ -497,15 +497,15 @@ public class Menu extends JFrame {
         );
         gl_contentPane.setVerticalGroup(
             gl_contentPane.createSequentialGroup()
-                .addGap(46)
-                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 380, GroupLayout.PREFERRED_SIZE)
-                .addGap(30)
+                .addGap(46) // Espace au-dessus de l'image
+                .addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE) // Image
+                .addGap(30) // Espace en dessous de l'image
                 .addComponent(startButton, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
-                .addGap(28)
+                .addGap(28) // Espace en dessous du bouton Start
                 .addComponent(exitButton, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
-                .addGap(23)
+                .addGap(23) // Espace en dessous du bouton Exit
                 .addComponent(producedByLabel)
-                .addGap(52)
+                .addGap(52) // Espace final
         );
         contentPane.setLayout(gl_contentPane);
     }
