@@ -88,7 +88,7 @@ public class Carte {
 			//22 : Le vérificateur vérifie que les trois valeurs sont en ordre soit croissant,
 				//soit décroissant, soit aucun des deux.| C >= T || C <= R
 			case "OrdreC" :
-				return carree >= triangle || carree <= rond;
+				return !(triangle < carree && carree < rond) && !(triangle > carree && carree > rond);
 				
 			default :
 				return false;
