@@ -509,8 +509,8 @@ import java.io.InputStream;
             	            "Agents ! L'UTBM est perdu, vous n'avez pas été à la hauteur de votre mission",
             	            "Fin de la partie",
             	            JOptionPane.ERROR_MESSAGE);
-            	  //  Menu frame = new Menu();
-            	  //  frame.setVisible(true);
+            	    Menu frame = new Menu(false);
+            	    frame.setVisible(true);
             	    dispose();
             	    return;
             	}
@@ -549,8 +549,8 @@ import java.io.InputStream;
         	            "Félicitations vous avez sauvé l'UTBM, agents : " + pseudosGagnants + " avec " + minValue + " demandes !",
         	            "Fin de la partie",
         	            JOptionPane.INFORMATION_MESSAGE);
-        	    //Menu frame = new Menu();
-        	    //frame.setVisible(true);
+        	    Menu frame = new Menu(false);
+        	    frame.setVisible(true);
         	    dispose();
         	}
 

@@ -57,7 +57,7 @@ public class Menu extends JFrame {
     /**
      * Create the frame.
      */
-    public Menu() {
+    public Menu(boolean firstOpen) {
     	setIconImage(Toolkit.getDefaultToolkit().getImage(Menu.class.getResource("/image/Turing-logo.PNG")));
         // Définir la taille de la fenêtre en plein écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -345,6 +345,8 @@ public class Menu extends JFrame {
                     }
                     
                     dialog.dispose();
+                    
+                    if(firstOpen) {
                     playVideo(dialog, Jliste, sDifficulty);
                     
                  // Créer un Timer et une tâche
@@ -360,7 +362,11 @@ public class Menu extends JFrame {
 
                     // Délai de 2 secondes (2000 millisecondes)
                     timer.schedule(task, 3000); 
-                    
+                    }else {
+                    	JeuInterface frame = new JeuInterface(Jliste, sDifficulty);
+                        frame.setVisible(true);
+                        dispose();
+                    }
                     
                     
                     
@@ -575,7 +581,7 @@ public class Menu extends JFrame {
         mediaPlayer.setOnEndOfMedia(() -> {
         	
             Platform.runLater(() -> {
-                // Fermer la fenêtre vidéo et afficher le jeu
+                // Fermer la fenêtre vidéo et afficher le jeu 
                 dialog.dispose(); // Fermer le dialogue vidéo
                 mediaPlayer.dispose(); // Libère les ressources du MediaPlayer
                 // Créer et afficher le jeu
