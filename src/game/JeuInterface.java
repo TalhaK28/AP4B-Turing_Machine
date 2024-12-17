@@ -882,8 +882,11 @@ private void showMenu() {
 	quitButton.addActionListener(new ActionListener() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
+	    	
 	        dialog.dispose(); // Fermer la fenêtre
-	        dispose();
+	        Menu frame = new Menu(false);
+    	    frame.setVisible(true);
+    	    dispose();
 	    }
 	});
 
