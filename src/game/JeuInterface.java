@@ -685,7 +685,7 @@ import java.io.InputStream;
         }
     }
 
-    //System.out.println("triangle = " + triangle + ", carree = " + carree + ", rond = " + rond);
+    
     controller.setVal(triangle, carree, rond);
 }
 
@@ -852,12 +852,6 @@ private void showMenu() {
 	    }
 	});
 
-	restartButton.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-	        //restartGame();
-	    }
-	});
 	buttonPanel.add(restartButton);
 
 	// Ajouter le sous-panneau des boutons au menuPanel
@@ -910,7 +904,7 @@ private void showMenu() {
 	        essaisParJoueur = new int[controller.getListeActJoueur().size()];
 	        cartesTestees.clear();
 	        for (Joueur joueur : controller.getListeActJoueur()) {
-	            joueur.resetStats(); // Créez une méthode resetStats() dans la classe Joueur pour réinitialiser les stats du joueur
+	            joueur.resetStats(); // méthode resetStats() dans la classe Joueur pour réinitialiser les stats du joueur
 	        }
 	        
 	        // Réinitialiser les résultats des tests
