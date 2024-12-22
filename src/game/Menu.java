@@ -68,6 +68,7 @@ public class Menu extends JFrame {
         // Background Image
         ImageIcon backgroundImg = new ImageIcon("src/image/fond_blanc.png");
         contentPane = new JPanel() {
+        	 private static final long serialVersionUID = 1L; // Ajoutez ce champ pour résoudre le warning
             @Override
             protected void paintComponent(java.awt.Graphics g) {
                 super.paintComponent(g);
@@ -87,6 +88,7 @@ public class Menu extends JFrame {
 
         // Start button
         JButton startButton = new JButton("Démarrer") {
+        	 private static final long serialVersionUID = 1L; // Ajoutez ce champ pour résoudre le warning
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -203,6 +205,7 @@ public class Menu extends JFrame {
                 // Ajoutez des boutons OK et Annuler
                 JPanel buttonPanel = new JPanel();
                 JButton okButton = new JButton("OK") {
+                	 private static final long serialVersionUID = 1L; // Ajoutez ce champ pour résoudre le warning
                     @Override
                     protected void paintComponent(Graphics g) {
                         Graphics2D g2 = (Graphics2D) g.create();
@@ -219,6 +222,7 @@ public class Menu extends JFrame {
                 };;
                 
                 JButton cancelButton = new JButton("Annuler"){
+                	 private static final long serialVersionUID = 1L; // Ajoutez ce champ pour résoudre le warning
                     @Override
                     protected void paintComponent(Graphics g) {
                         Graphics2D g2 = (Graphics2D) g.create();
@@ -424,6 +428,7 @@ public class Menu extends JFrame {
 
         /// Exit button
         JButton exitButton = new JButton("Quitter") {
+        	 private static final long serialVersionUID = 1L; // Ajoutez ce champ pour résoudre le warning
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();

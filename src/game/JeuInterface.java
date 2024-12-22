@@ -79,9 +79,11 @@ import java.io.InputStream;
 
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // Ajouter une image de fond
-            ImageIcon backgroundImg = new ImageIcon("src/image/fond.png");
+
+            // Utilisation de getClass().getResource pour accéder à l'image dans le JAR
+            ImageIcon backgroundImg = new ImageIcon(getClass().getResource("/image/fond.png"));
             contentPane = new JPanel() {
+            	 private static final long serialVersionUID = 1L; // Ajoutez ce champ pour résoudre le warning
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
@@ -781,6 +783,7 @@ private void showMenu() {
 
 	// Ajouter le bouton "Quitter la Partie" avec le style du bouton "Annuler"
 	JButton quitButton = new JButton("Quitter la Partie") {
+		 private static final long serialVersionUID = 1L; // Ajoutez ce champ pour résoudre le warning
 	    @Override
 	    protected void paintComponent(Graphics g) {
 	        Graphics2D g2 = (Graphics2D) g.create();
@@ -819,6 +822,7 @@ private void showMenu() {
 
 	// Ajouter le bouton "Recommencer la Partie" avec le style du bouton "OK"
 	JButton restartButton = new JButton("Recommencer") {
+		 private static final long serialVersionUID = 1L; // Ajoutez ce champ pour résoudre le warning
 	    @Override
 	    protected void paintComponent(Graphics g) {
 	        Graphics2D g2 = (Graphics2D) g.create();
